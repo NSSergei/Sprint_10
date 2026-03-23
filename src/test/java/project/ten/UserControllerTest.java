@@ -36,7 +36,7 @@ public class UserControllerTest {
     }
 
     @Test
-    void PostUsers() throws IOException, InterruptedException {
+    void postUsers() throws IOException, InterruptedException {
         client = HttpClient.newHttpClient();
 
         String testName = """

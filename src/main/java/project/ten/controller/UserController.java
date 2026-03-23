@@ -19,7 +19,6 @@ import java.util.Map;
 public class UserController {
     private final Map<Long, User> userMap = new HashMap<>();
 
-    //создание пользователя;
     @PostMapping
     public User addUser(@Valid @RequestBody User user){
         log.info("Request to create user {}", user.getLogin());
@@ -29,23 +28,19 @@ public class UserController {
             throw new ValidationException("Логин не может быть пустым");
         }
 
-        //имя для отображения может быть пустым — в таком случае будет использован логин;
         if(user.getName() == null || user.getName().isBlank()){
             user.setName(user.getLogin());
         }
 
-        //электронная почта не может быть пустой и должна содержать символ @;
         if(user.getEmail() == null || user.getEmail().isBlank() || !user.getEmail().contains("@")){
             log.warn("Invalid email: {}", user.getEmail());
             throw new ValidationException("Ошибка формата электронной почты / почта не должна быть пустой");
         }
 
-        //дата рождения не может быть в будущем.
         if(user.getBirthday() != null && user.getBirthday().isAfter(LocalDate.now())){
             log.warn("Invalid birthday: {}", user.getBirthday());
             throw  new ValidationException("Дата рождения не может быть в будущем");
         }
-
 
         user.setId(nextIndex());
         userMap.put(user.getId(),user);
@@ -63,7 +58,6 @@ public class UserController {
         return ++index;
     }
 
-    //обновление пользователя;
     @PutMapping
     public User changeUserInfo(@Valid @RequestBody User user){
         if(user.getId() == null){
@@ -76,24 +70,20 @@ public class UserController {
             throw new ValidationException("Человек с данным id отсутствует");
         }
 
-        //логин не может быть пустым и содержать пробелы;
         if(user.getLogin() == null || user.getLogin().isBlank() || user.getLogin().contains(" ")){
             log.warn("Invalid login: {}", user.getLogin());
             throw new ValidationException("Логин не может быть пустым");
         }
 
-        //имя для отображения может быть пустым — в таком случае будет использован логин;
         if(user.getName() == null || user.getName().isBlank()) {
             user.setName(user.getLogin());
         }
 
-        //электронная почта не может быть пустой и должна содержать символ @;
         if(user.getEmail() == null || user.getEmail().isBlank() || !user.getEmail().contains("@")){
             log.warn("Invalid email: {}", user.getEmail());
             throw new ValidationException("Ошибка формата электронной почты / почта не должна быть пустой");
         }
 
-        //дата рождения не может быть в будущем.
         if(user.getBirthday() != null && user.getBirthday().isAfter(LocalDate.now())){
             log.warn("Invalid birthday: {}", user.getBirthday());
             throw  new ValidationException("Дата рождения не может быть в будущем");
@@ -106,7 +96,6 @@ public class UserController {
         return user;
     }
 
-    //получение списка всех пользователей
     @GetMapping
     public Collection<User> getAllUsers(){
         log.info("Request to get all users. Total users: {}", userMap.size());

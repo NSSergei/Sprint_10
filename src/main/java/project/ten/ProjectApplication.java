@@ -10,8 +10,6 @@ import java.time.LocalDateTime;
 @SpringBootApplication
 
 public class ProjectApplication {
-    private final static Logger log = LoggerFactory.getLogger(ProjectApplication.class);
-
     public static void main(final String[] args) {
         SpringApplication.run(ProjectApplication.class, args);
     }
